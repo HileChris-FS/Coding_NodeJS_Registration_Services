@@ -1,7 +1,8 @@
+const mongoose = require('mongoose');
 const express = require("express");
-const router = require("../routes/routes");
-const validation = require("../validation/validation");
+const router = require("../api/routes/routes");
 const app = express();
+require('dotenv').config();
 
 app.use(express.urlencoded({extended: true}));
 //all request will handle json
@@ -43,5 +44,14 @@ app.use((error,req,res,next) => {
         },
     });
 });
+
+mongoose.connect(process.env.db_url), (err)=> {
+    if(err){
+        console.error('Error', err.message);
+    }
+    else{
+        console.log("MongoDB connected successuflly")
+    }
+}
 
 module.exports = app;

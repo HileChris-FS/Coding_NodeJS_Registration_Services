@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const validate = require("../validation/validation"
+const validate = require("../../validation/validation"
 )
 
 router.get("/",(req, res) => {
