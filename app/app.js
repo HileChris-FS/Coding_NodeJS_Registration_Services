@@ -18,16 +18,7 @@ app.use((req,res,next)=>{
     next();
 });
 
-//middleware for EJS Templating
-app.set('view engine', 'ejs');
-app.engine('ejs', require('ejs').__express);
-
-// static site middleware
-app.use(express.static('public'));
-app.use(express.static('views'));
-
 app.use("/", router)
-app.use("/registration", validation)
 
 //error handling middleware
 app.use((req,res,next) => {
