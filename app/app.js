@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const express = require("express");
-const router = require("../api/routes/routes");
+const router = require('../api/routes/routes');
 const app = express();
 require('dotenv').config();
 
@@ -18,7 +18,7 @@ app.use((req,res,next)=>{
     next();
 });
 
-app.use("/", router)
+app.use('/', router)
 
 //error handling middleware
 app.use((req,res,next) => {
@@ -36,13 +36,13 @@ app.use((error,req,res,next) => {
     });
 });
 
-mongoose.connect(process.env.db_url), (err)=> {
+mongoose.connect(process.env.db_url, (err)=>{
     if(err){
         console.error('Error', err.message);
     }
     else{
-        console.log("MongoDB connected successuflly")
+        console.log("MongoDB connected successfully");
     }
-}
+})
 
 module.exports = app;

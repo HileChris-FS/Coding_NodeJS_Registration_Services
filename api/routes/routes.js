@@ -1,54 +1,49 @@
 const express = require('express');
+const postRegistration = require('../../db/db');
 const router = express.Router();
-const validate = require("../../validation/validation"
-)
 
 router.get("/",(req, res) => {
-    res.render('index', {
-        pagename: "Home",
+    res.status(200).json({
+        message: "Server is up",
+        method: req.method,
     });
 });
 
-router.get("/about",(req, res) => {
-    res.render('about', {
-        pagename: "About",
-    });
+router.post("/registration", (req, res, next)=> {
+    postRegistration(req).then(result =>{
+        console.log(result);
+        res.status(200).json({
+            message: "Registration Saved",
+            status: 200,
+            registration: {
+                firstname: result.firstname,
+                lastname: result.lastname,
+                address: result.address,
+                city: result.city,
+                state: result.state,
+                zip: result.zip,
+                email: result.email,
+                password: result.password,
+                metadata: {
+                    hostname: req.hostname,
+                    method: req.method,
+                },
+            }, 
+        });
+    }).catch(err => {
+        res.status(500).json({
+            message: "Registration Failed",
+            status: 500,
+            error: {
+                message: err.message,
+                metadata: {
+                    hostname: req.hostname,
+                    method: req.method,
+                },
+            }, 
+        });
+    })
 });
 
-router.get("/contact",(req, res) => {
-    res.render('contact', {
-        pagename: "Contact",
-    });
-});
-
-router.get("/projects",(req, res) => {
-    res.render('projects', {
-        pagename: "Projects",
-    });
-});
-
-router.get("/registration",(req, res) => {
-    res.render('registration', {
-        pagename: "Registration",
-        
-    });
-   
-});
-
-router.post("/registration", (req, res) => {
-    const errors = validate(req);
-    if(Object.keys(errors).length === 0){
-        errors.message = "Registration Successful"
-    } else {
-        errors.message = 'Registration failed'
-    }
-
-    console.log(req.body)
-    res.render('registration', {
-        pagename: "Registration",
-        errors: errors,
-        input: input,
-    });
-});
 
 module.exports = router;
